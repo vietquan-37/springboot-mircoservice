@@ -30,17 +30,17 @@ services:
     restart: unless-stopped
 
   mongodb:
-    container_name: ms_mongo_db
+    container_name: mongo_db
     image: mongo
     ports:
       - 27017:27017
     volumes:
-      - mongo:/data/db
+      - mongo:/data
     networks:
       - microservice-net
     environment:
-      - MONGO_INIT_DB_ROOT_USERNAME=vietquan
-      - MONGO_INIT_DB_ROOT_PASSWORD=vietquan
+      - MONGO_INITDB_ROOT_USERNAME=vietquan
+      - MONGO_INITDB_ROOT_PASSWORD=vietquan
 
   mongo-express:
     image: mongo-express
@@ -52,6 +52,8 @@ services:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=vietquan
       - ME_CONFIG_MONGODB_ADMINPASSWORD=vietquan
       - ME_CONFIG_MONGODB_SERVER=mongodb
+    networks:
+      - microservice-net
 
   mail-dev:
     container_name: ms_mail_dev
