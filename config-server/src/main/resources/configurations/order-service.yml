@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5431/order
+    username: vietquan
+    password: vietquan
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        string.json.type.mapping: orderConfirmation:com.vietquan37.ecommerce.order.kafka.OrderConfirmation
+application:
+  config:
+    customer-url: http://localhost:8090/api/v1/customer
+    product-url:  http://localhost:8050/api/v1/product
+    payment-url: http://localhost:6969/api/v1/payment
+server:
+  port: 8040

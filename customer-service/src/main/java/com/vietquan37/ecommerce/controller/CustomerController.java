@@ -24,7 +24,7 @@ public class CustomerController {
                 .body(APIResponse.builder().data(response).message("Create customer successfully").build());
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<APIResponse> updateCustomer(@PathVariable String id, @Valid @RequestBody CustomerUpdateDTO dto) {
         customerService.updateCustomer(id, dto);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -36,7 +36,7 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(APIResponse.builder().data(response).message("Retrieving customer successfully").build());
     }
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<APIResponse> findAllCustomer(@PathVariable String id) {
         var response= customerService.findCustomerById(id);
         return ResponseEntity.status(HttpStatus.CREATED)
