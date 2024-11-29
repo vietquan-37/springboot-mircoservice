@@ -16,13 +16,14 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<APIResponse> handleEntityNotFoundException(Exception ex){
-
+    public ResponseEntity<APIResponse> handle(BusinessException exp) {
         APIResponse response = APIResponse.builder()
-                .message(ex.getMessage())
+                .message(exp.getMessage())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<APIResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -33,13 +34,13 @@ public class GlobalExceptionHandler {
                 .error(errors)
                 .build());
     }
+
+    // General exception handler to catch all other exceptions and return 500
     @ExceptionHandler(Exception.class)
     public ResponseEntity<APIResponse> handleGeneralException(Exception ex) {
         APIResponse response = APIResponse.builder()
                 .message("An unexpected error occurred: " + ex.getMessage())
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 }

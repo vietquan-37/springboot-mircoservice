@@ -4,6 +4,7 @@ package com.vietquan37.ecommerce.controller;
 import com.vietquan37.ecommerce.payload.request.CustomerDTO;
 import com.vietquan37.ecommerce.payload.request.CustomerUpdateDTO;
 import com.vietquan37.ecommerce.payload.response.APIResponse;
+import com.vietquan37.ecommerce.payload.response.CustomerResponse;
 import com.vietquan37.ecommerce.service.ICustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +31,18 @@ public class CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(APIResponse.builder().message("Updating customer successfully").build());
     }
+
     @GetMapping
     public ResponseEntity<APIResponse> findAllCustomer(@RequestParam(value = "page", required = false, defaultValue = "1") int page, @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
-       var response= customerService.findAllCustomers(page,size);
+        var response = customerService.findAllCustomers(page, size);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(APIResponse.builder().data(response).message("Retrieving customer successfully").build());
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<APIResponse> findAllCustomer(@PathVariable String id) {
-        var response= customerService.findCustomerById(id);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(APIResponse.builder().data(response).message("Retrieving customer successfully").build());
+    public ResponseEntity<CustomerResponse> findAllCustomer(@PathVariable String id) {
+        var response = customerService.findCustomerById(id);
+        return ResponseEntity.ok(response);
     }
 }
+

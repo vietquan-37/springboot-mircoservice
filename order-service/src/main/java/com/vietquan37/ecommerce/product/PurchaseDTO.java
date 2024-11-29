@@ -9,8 +9,7 @@ public record PurchaseDTO(
         @NotNull
         Integer productId,
         @Positive
-        double quantity,
-        BigDecimal price
+        double quantity
 
 ) {
 }

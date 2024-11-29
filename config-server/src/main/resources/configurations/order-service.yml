@@ -15,11 +15,11 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-        string.json.type.mapping: orderConfirmation:com.vietquan37.ecommerce.order.kafka.OrderConfirmation
+        spring.json.type.mapping: orderConfirmation:com.vietquan37.ecommerce.order.kafka.OrderConfirmation
 application:
   config:
-    customer-url: http://localhost:8090/api/v1/customer
-    product-url:  http://localhost:8050/api/v1/product
-    payment-url: http://localhost:6969/api/v1/payment
+    customer-url: http://localhost:8222/api/v1/customer
+    product-url:  http://localhost:8222/api/v1/product
+    payment-url: http://localhost:8222/api/v1/payment
 server:
   port: 8040

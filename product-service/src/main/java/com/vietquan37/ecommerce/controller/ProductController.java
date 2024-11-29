@@ -4,6 +4,7 @@ import com.vietquan37.ecommerce.entity.Product;
 import com.vietquan37.ecommerce.payload.request.ProductDTO;
 import com.vietquan37.ecommerce.payload.request.ProductPurchaseDTO;
 import com.vietquan37.ecommerce.payload.response.APIResponse;
+import com.vietquan37.ecommerce.payload.response.ProductPurchaseResponse;
 import com.vietquan37.ecommerce.service.IProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,12 +48,9 @@ public class ProductController {
         );
     }
     @PostMapping("/purchase")
-    public ResponseEntity<APIResponse> purchaseProducts(@RequestBody @Valid List<ProductPurchaseDTO> dto) {
+    public ResponseEntity<List<ProductPurchaseResponse>> purchaseProducts(@RequestBody @Valid List<ProductPurchaseDTO> dto) {
         var response = productService.purchaseProducts(dto);
-        return ResponseEntity.ok(APIResponse.builder()
-                .data(response)
-                .message("Retrieving purchase products successfully")
-                .build()
+        return ResponseEntity.ok(response
         );
     }
 }

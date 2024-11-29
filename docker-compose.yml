@@ -86,11 +86,13 @@ services:
       - microservice-net
 
   mail-dev:
-    container_name: ms_mail_dev
+    container_name: ms-mail-dev
     image: maildev/maildev
     ports:
       - 1080:1080
       - 1025:1025
+    networks:
+      - microservice-net
 
 
 networks:

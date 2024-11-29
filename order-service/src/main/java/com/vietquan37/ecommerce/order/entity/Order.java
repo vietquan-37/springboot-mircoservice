@@ -1,7 +1,6 @@
 package com.vietquan37.ecommerce.order.entity;
 
 import com.vietquan37.ecommerce.order.enumClass.PaymentMethod;
-import com.vietquan37.ecommerce.orderline.OrderLine;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,6 +34,6 @@ public class Order {
     @Column(updatable = false,nullable = false)
     private LocalDateTime createAt;
     @LastModifiedDate
-    @Column(insertable = false,nullable = false)
+    @Column(insertable = false)
     private LocalDateTime lastUpdateAt;
 }

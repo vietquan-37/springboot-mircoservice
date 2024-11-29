@@ -11,8 +11,9 @@ import com.vietquan37.ecommerce.order.payload.response.OrderResponse;
 import com.vietquan37.ecommerce.order.payload.response.PageResponse;
 import com.vietquan37.ecommerce.order.repository.OrderRepository;
 import com.vietquan37.ecommerce.order.service.IOrderService;
-import com.vietquan37.ecommerce.orderline.OrderLineDTO;
-import com.vietquan37.ecommerce.orderline.OrderLineService;
+import com.vietquan37.ecommerce.order.payload.request.OrderLineDTO;
+import com.vietquan37.ecommerce.payment.PaymentClient;
+import com.vietquan37.ecommerce.payment.PaymentRequest;
 import com.vietquan37.ecommerce.product.ProductClient;
 import com.vietquan37.ecommerce.product.PurchaseDTO;
 import lombok.RequiredArgsConstructor;
@@ -31,26 +32,37 @@ public class OrderService implements IOrderService {
     private final OrderMapper orderMapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
 
     @Override
     public Integer createOrder(OrderDTO dto) {
         //check customer -->OpenFeign
         var customer = customerClient.findCustomerById(dto.customerId())
                 .orElseThrow(() -> new BusinessException("Cannot create order:: Not found customer with id " + dto.customerId()));
-        //purchase products --> using restTemplate
-        var purchaseProduct = productClient.purchaseProducts(dto.products());
+
+        var purchaseProduct = productClient.purchaseProduct(dto.products());
         //persist order
         var order = orderRepository.save(orderMapper.mapDTO(dto));
         for (PurchaseDTO purchaseDTO : dto.products()) {
             orderLineService.createOrderLine(new OrderLineDTO(
                     purchaseDTO.productId(),
                     purchaseDTO.quantity(),
-                    order.getId(),
-                    purchaseDTO.price()
+                    order.getId()
+
 
             ));
         }
         //start payment process
+        var paymentRequest =new PaymentRequest(
+                dto.amount(),
+                dto.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+
+        );
+
+        paymentClient.requestOrderPayment(paymentRequest);
         //sending to notification to kafka
         orderProducer.sendOrderConfirmation(new OrderConfirmation(
                 dto.reference(),

@@ -15,6 +15,6 @@ public interface ProductMapper {
     @Mapping(target = "categoryName",source = "category.name")
     ProductResponse mapResponse(Product product);
     @Mapping(target = "productId", source = "product.id")
-    @Mapping(target = "quantity", expression = "java(quantity)")
+    @Mapping(target = "quantity", source = "quantity")
     ProductPurchaseResponse toProductPurchaseResponse(Product product, @Context double quantity);
 }
